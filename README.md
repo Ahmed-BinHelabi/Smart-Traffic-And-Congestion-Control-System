@@ -1,5 +1,13 @@
 ### Smart Traffic and Congestion Control System (IoT)
 
+![ESP32](https://img.shields.io/badge/Board-ESP32-blue?logo=espressif)
+![Arduino IDE](https://img.shields.io/badge/IDE-Arduino-green?logo=arduino)
+![IoT](https://img.shields.io/badge/IoT-Smart%20Traffic-orange?logo=internet-of-things)
+![MQTT](https://img.shields.io/badge/Protocol-MQTT-purple?logo=eclipse-mosquitto)
+![HTML](https://img.shields.io/badge/Frontend-HTML5-red?logo=html5)
+![Bootstrap](https://img.shields.io/badge/UI-Bootstrap-blueviolet?logo=bootstrap)
+![License](https://img.shields.io/badge/License-MIT-lightgrey)
+
 ##### Overview
 
 Traffic congestion is a growing challenge in modern cities. Traditional traffic light systems rely on fixed timers that do not adapt to real-time conditions—leading to wasted time, fuel, and efficiency.
