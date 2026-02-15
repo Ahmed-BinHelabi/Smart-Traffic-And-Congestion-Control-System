@@ -1,4 +1,4 @@
-### Smart Traffic and Congestion Control System (IoT)
+# 🚦 Smart Traffic and Congestion Control System (IoT)
 
 ![ESP32](https://img.shields.io/badge/Board-ESP32-blue?logo=espressif)
 ![Arduino IDE](https://img.shields.io/badge/IDE-Arduino-green?logo=arduino)
@@ -8,98 +8,131 @@
 ![Bootstrap](https://img.shields.io/badge/UI-Bootstrap-blueviolet?logo=bootstrap)
 ![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
-##### Overview
+---
 
-Traffic congestion is a growing challenge in modern cities. Traditional traffic light systems rely on fixed timers that do not adapt to real-time conditions—leading to wasted time, fuel, and efficiency.
+## 🧠 Overview
 
-This project presents an IoT-based Smart Traffic Control System using an ESP32, ultrasonic sensors, and LED traffic lights. The system dynamically adjusts green light duration based on actual queue sizes, communicates through MQTT, and provides a real-time dashboard for monitoring.
+Traffic congestion is a growing challenge in modern cities. Traditional traffic lights operate on fixed timers that do not adapt to real-time traffic conditions—leading to wasted time, fuel, and efficiency.  
 
-##### Hardware & Software Components
+This project implements an **IoT-based Smart Traffic Control System** using:
 
-- ESP32-WROOM-32S → Microcontroller for traffic logic + MQTT communication
+- **ESP32** microcontroller  
+- **Ultrasonic sensors** to detect vehicle queues  
+- **LED traffic lights** for simulation  
+- **MQTT** for real-time communication  
+- **Web dashboard** for live monitoring
 
-- Ultrasonic Sensors (HC-SR04) → Detect vehicle entry & exit
+The system dynamically adjusts green light durations based on actual queue sizes, reducing congestion and improving traffic flow.
 
-- LEDs (Red, Yellow, Green) → Simulated traffic lights
+---
 
-- Breadboard + Jumper Wires → Circuit assembly
+## ⚙️ Hardware & Software Components
 
-- Wi-Fi Network → For MQTT connectivity
+| Component | Purpose |
+|-----------|---------|
+| ESP32-WROOM-32S | Microcontroller for traffic logic and MQTT communication |
+| Ultrasonic Sensors (HC-SR04) | Detect vehicle entry & exit |
+| LEDs (Red, Yellow, Green) | Simulated traffic lights |
+| Breadboard + Jumper Wires | Circuit assembly |
+| Wi-Fi Network | MQTT connectivity |
+| HiveMQ Public Broker | MQTT publish/subscribe communication |
+| Arduino IDE | ESP32 code development |
+| HTML, CSS, JavaScript, Bootstrap, MQTT.js | Real-time web dashboard |
 
-- HiveMQ Public Broker → MQTT publish/subscribe communication
+---
 
-- Arduino IDE → For ESP32 code development
+## 🏗 System Design
 
-- HTML, JavaScript, Bootstrap, MQTT.js → Real-time dashboard
+The project simulates a **two-way traffic intersection**:
 
-##### System Design
-
-The project simulates a two-way traffic intersection:
-
-- West → East (WE)
-- East → West (EW)
+- **West → East (WE)**  
+- **East → West (EW)**  
 
 Each direction has:
 
-- 1 Entry Sensor
-- 1 Exit Sensor
-- 3 Traffic LEDs (Red, Yellow, Green)
-- A Queue Counter (tracked in ESP32 memory)
+- 1 Entry Sensor  
+- 1 Exit Sensor  
+- 3 Traffic LEDs (Red, Yellow, Green)  
+- A queue counter (tracked in ESP32 memory)
 
-System Workflow:
+**Workflow:**
 
-1. Sensors detect vehicles entering/exiting.
-2. Queue size is updated in real-time.
-3. ESP32 decides which direction gets green based on queue comparison.
-4. Green duration = Base (5s) + (2s × Number of Cars).
-5. Traffic light states + queue values are published via MQTT.
+1. Sensors detect vehicles entering/exiting.  
+2. Queue size is updated in real-time.  
+3. ESP32 calculates which direction should get green light based on queue comparison.  
+4. Green duration = Base (5s) + (2s × Number of Cars).  
+5. Traffic light states and queue values are published via MQTT.  
 6. Dashboard updates live with traffic states.
 
-##### How It Works
+---
 
-- Queue Detection
+## 🔧 How It Works
 
-* Entry sensor detects approaching cars → queue increases.
-* Exit sensor detects leaving cars → queue decreases.
+### 1️⃣ Queue Detection
+- Entry sensor detects incoming cars → queue increases.  
+- Exit sensor detects leaving cars → queue decreases.
 
-- Adaptive Timing
+### 2️⃣ Adaptive Timing
+- Green light duration is calculated dynamically:  
 
-* Green duration is calculated dynamically:
-  Green Time = BASE_GREEN_DURATION + (Queue Size × TIME_PER_CAR)
-* Base Duration = 5 seconds
-* Time per Car = 2 seconds
+```
+Green Duration = BASE_GREEN_DURATION + (Queue Size × TIME_PER_CAR)
+```
 
-- Traffic Light Logic
+- Base Duration = 5 seconds  
+- Time per Car = 2 seconds  
 
-* Green → Yellow (2s) → Red → Switch direction
-* Alternates if both queues are equal.
+### 3️⃣ Traffic Light Logic
+- **Sequence:** Green → Yellow (2s) → Red → Switch direction  
+- Alternates based on real-time queue sizes
 
-- MQTT Communication
+### 4️⃣ MQTT Communication
+- ESP32 publishes real-time data to topics:  
 
-* Publishes real-time states & queues to topics:
-* - iot/traffic/WE/state
-* - iot/traffic/EW/state
-* - iot/traffic/WE/queue
-* - iot/traffic/EW/queue
+```
+iot/traffic/WE/state  → Current state of WE direction
+iot/traffic/EW/state  → Current state of EW direction
+iot/traffic/WE/queue  → Queue count of WE direction
+iot/traffic/EW/queue  → Queue count of EW direction
+```
 
-- Dashboard
+### 5️⃣ Dashboard
+- Built with HTML, CSS, JavaScript, and Bootstrap  
+- Displays traffic light states as colored circles  
+- Shows live vehicle queue counts for each lane  
 
-* Built with HTML, CSS , JavaScript
-* Displays traffic light state (colored circle) & live queue count.
+---
 
-##### Setup Instructions
+## 🚀 Setup Instructions
 
-1. Hardware
+### 1️⃣ Hardware
+1. Connect ESP32 to ultrasonic sensors and LEDs as per the circuit diagram (see `/Docs/`).  
+2. Upload the Arduino code (`Arduino_Code/traffic.ino`) via Arduino IDE.
 
-- Connect ESP32 with sensors & LEDs as per the circuit diagram (see /Docs/ folder).
-- Upload the Arduino code (Arduino_Code/traffic.ino) using Arduino IDE.
+### 2️⃣ MQTT Setup
+1. Ensure ESP32 is connected to Wi-Fi.  
+2. Uses HiveMQ public broker: `broker.hivemq.com` (WSS, port 8884).  
 
-2. MQTT Setup
+### 3️⃣ Dashboard
+1. Open `/Dashboard/index.html` in a modern browser.  
+2. Dashboard connects automatically to MQTT and displays real-time traffic states.  
 
-- Ensure ESP32 is connected to Wi-Fi.
-- Uses HiveMQ public broker (broker.hivemq.com) with WSS on port 8884.
+---
 
-3. Dashboard
+## 📊 Traffic Phase Logic
 
-- Open /Dashboard/index.html in a browser.
-- Connects automatically to MQTT & displays real-time updates.
+```
+PHASE_GREEN_WE → PHASE_YELLOW_WE → PHASE_GREEN_EW → PHASE_YELLOW_EW → repeat
+```
+
+- Phase transitions only occur if the opposing lane has a non-zero queue.  
+- Prevents unnecessary switching when one lane has no traffic.
+
+---
+
+## 👤 Author
+
+**Ahmed Bin Halabi**  
+Software Engineering Student — Alfaisal University  
+
+[GitHub](https://github.com/Ahmed-BinHelabi) | [LinkedIn](https://www.linkedin.com/in/ahmed-bin-halabi-a78127253/)
